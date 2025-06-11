@@ -402,7 +402,7 @@
          */
         function initializeWebSocket() {
             // Use window.location.host to connect to the same host that served the page
-            ws = new WebSocket(`ws://${window.location.host}`);
+            ws = new WebSocket(`wss://${window.location.host}`);
 
             ws.onopen = () => {
                 displayStatus('Grilling up connection to the burger server...', 'info');
