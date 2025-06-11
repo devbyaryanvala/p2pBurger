@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>file.Burger</title>
+  
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="https://i.imghippo.com/files/lOP9883Egc.png">
+    <style>
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcf0d8; /* Light bun color for background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+        .container {
+            background-color: #ffffff; 
+            border-radius: 16px; 
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); 
+            padding: 40px;
+            width: 100%;
+            max-width: 960px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px; /* Increased gap */
+        }
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .section-title {
+            font-size: 1.75rem; 
+            font-weight: 800; 
+            color: #4a2c1d; 
+            margin-bottom: 24px;
+            text-align: center; /* Center titles */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700; /* Bolder labels */
+            color: #5a4b44; /* Darker brown for labels */
+        }
+        .input-group input[type="text"],
+        .input-group input[type="file"],
+        .input-group select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0c8a8; /* Bun-like border */
+            border-radius: 10px; 
+            font-size: 1rem;
+            color: #334155;
+            background-color: #fcf8f2; /* Off-white for inputs */
+        }
+        .input-group input[type="file"] {
+            cursor: pointer;
+        }
+        .btn {
+            padding: 14px 28px; /* Larger buttons */
+            border-radius: 10px; /* More rounded buttons */
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+            flex-grow: 1;
+            border: none; /* Remove default border */
+        }
+        .btn-primary {
+            background-color: #22c55e; /* Vibrant green (lettuce) */
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #16a34a; /* Darker green on hover */
+            transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .btn-secondary {
+            background-color: #fbbf24; /* Cheese yellow */
+            color: #4a2c1d; /* Dark brown text for contrast */
+        }
+        .btn-secondary:hover {
+            background-color: #f59e0b; /* Darker yellow on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .status-message {
+            padding: 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            word-wrap: break-word;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+        }
+        .status-message.info {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        .status-message.success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .status-message.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 8px;
+            height: 18px; /* Slightly taller */
+            overflow: hidden;
+            margin-top: 12px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #ef4444; /* Ketchup red */
+            width: 0%;
+            border-radius: 8px;
+            transition: width 0.1s linear;
+        }
+        .file-list, .peer-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px; /* Increased gap */
+            background-color: #fffaf0; /* Creamy white */
+            border: 1px solid #f0e6d6; /* Softer border */
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 150px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .file-item, .peer-item {
+            background-color: #ffffff;
+            border: 1px solid #e0c8a8; /* Bun-like border */
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .file-item span, .peer-item span {
+            color: #4a2c1d;
+            font-weight: 600;
+            word-break: break-all;
+        }
+        .file-item a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .file-item a:hover {
+            text-decoration: underline;
+        }
+        .peer-item.self {
+            background-color: #ffedd5; 
+            border-color: #facc15;
+        }
+        .peer-item.connected {
+            background-color: #dcfce7; 
+            border-color: #4ade80; 
+        }
+        /* Burger ASCII Art */
+        /* .burger-art {
+            font-family: 'monospace', sans-serif;
+            text-align: center;
+            max-width: 100px;
+            max-height: 100px;
+            margin-bottom: 20px;
+            color: #4a2c1d;
+            font-size: 1.2rem;
+            line-height: 1;
+        } */
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="container bg-white rounded-xl shadow-xl p-8 gap-6 md:gap-8">
+        <!-- Left Panel: Connection & Peer List -->
+        <div class="col-span-1">
+            <h1 class="section-title text-4xl mb-6">🍔 file.Burger 🍔</h1>
+            <h2 class="section-title">Order Up Your Connection!</h2>
+
+            <div class="input-group mb-4">
+                <label for="my-peer-id" class="block text-slate-600 font-semibold mb-2">My Patty ID:</label>
+                <input type="text" id="my-peer-id" readonly class="w-full p-3 border border-gray-300 rounded-lg text-slate-800 bg-gray-50 cursor-not-allowed">
+            </div>
+
+            <div class="input-group mb-4">
+                <label for="room-id" class="block text-slate-600 font-semibold mb-2">Secret Sauce Room ID:</label>
+                <input type="text" id="room-id" placeholder="Enter or generate a Secret Sauce ID" class="w-full p-3 border border-gray-300 rounded-lg text-slate-800 bg-gray-50">
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                <button id="create-room" class="btn btn-primary w-full sm:w-1/2">
+                    Start a New Burger!
+                </button>
+                <button id="join-room" class="btn btn-secondary w-full sm:w-1/2">
+                    Join the Burger Bash!
+                </button>
+            </div>
+
+            <h3 class="section-title">Your Burger Buddies</h3>
+            <div id="connected-peers-list" class="peer-list">
+                <p class="text-slate-500 italic">No burger buddies connected yet.</p>
+            </div>
+            <div class="status-message mt-6 p-4 bg-blue-50 text-blue-800 rounded-lg shadow-sm" id="status-message">
+                Grilling up connection to the burger server...
+            </div>
+        </div>
+
+        <!-- Right Panel: File Sharing & Received Files -->
+        <div class="col-span-1">
+            <h2 class="section-title">Pass the Patties!</h2>
+            <div class="input-group mb-4">
+                <label for="target-peer-select" class="block text-slate-600 font-semibold mb-2">Send Patties to:</label>
+                <select id="target-peer-select" class="w-full p-3 border border-gray-300 rounded-lg text-slate-800 bg-gray-50" disabled>
+                    <option value="">Select a connected burger buddy...</option>
+                </select>
+            </div>
+            <div class="input-group mb-4">
+                <label for="file-input" class="block text-slate-600 font-semibold mb-2">Pick Your Patty:</label>
+                <input type="file" id="file-input" class="w-full p-3 border border-gray-300 rounded-lg text-slate-800 bg-gray-50">
+            </div>
+
+            <button id="send-file" class="btn btn-primary w-full">
+                Grill & Send Patty!
+            </button>
+
+            <div class="progress-bar-container mt-4 hidden" id="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <p class="text-sm text-slate-500 mt-2 text-right" id="progress-text"></p>
+
+            <h3 class="section-title mt-8">Your Burger Bundles</h3>
+            <div id="received-files" class="file-list">
+                <p class="text-slate-500 italic">No burger bundles received yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const myPeerIdInput = document.getElementById('my-peer-id');
+        const roomIdInput = document.getElementById('room-id');
+        const createRoomBtn = document.getElementById('create-room');
+        const joinRoomBtn = document.getElementById('join-room');
+        const connectedPeersList = document.getElementById('connected-peers-list');
+        const targetPeerSelect = document.getElementById('target-peer-select');
+        const fileInput = document.getElementById('file-input');
+        const sendFileBtn = document.getElementById('send-file');
+        const statusMessage = document.getElementById('status-message');
+        const receivedFilesDiv = document.getElementById('received-files');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+
+        // WebRTC and WebSocket variables
+        let ws; // WebSocket connection to the signaling server
+        let myPeerId = null; // The unique ID for this client
+        let currentRoomId = null;
+
+        // Map<peerId, { pc: RTCPeerConnection, dc: RTCDataChannel, senderFile: FileReader, fileOffset: number }>
+        const peerConnections = new Map();
+        // Map<peerId, { buffers: ArrayBuffer[], size: number, name: string, mimeType: string, receivedBytes: number }>
+        const incomingFileTransfers = new Map();
+
+        const chunkSize = 16 * 1024; // 16 KB chunks
+
+        // RTCPeerConnection configuration
+        const rtcConfig = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' },
+            ],
+        };
+
+        // --- Helper Functions ---
+
+        /**
+         * Displays a message in the status area.
+         * @param {string} message - The message to display.
+         * @param {string} type - 'info', 'success', 'error'.
+         */
+        function displayStatus(message, type = 'info') {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message mt-6 p-4 rounded-lg shadow-sm ${type}`; /* Add type as class */
+        }
+
+        /**
+         * Updates the file transfer progress bar and text.
+         * Note: This currently assumes a single active transfer for visual display.
+         * For multiple concurrent transfers, a more complex UI would be needed.
+         * @param {number} currentBytes - The number of bytes transferred so far.
+         * @param {number} totalBytes - The total size of the file.
+         */
+        function updateProgressBar(currentBytes, totalBytes) {
+            if (totalBytes === 0 || currentBytes === 0) {
+                progressBar.style.width = '0%';
+                progressText.textContent = '';
+                progressContainer.classList.add('hidden');
+                return;
+            }
+
+            const percentage = (currentBytes / totalBytes) * 100;
+            progressBar.style.width = `${percentage}%`;
+            progressText.textContent = `${(currentBytes / (1024 * 1024)).toFixed(2)} MB / ${(totalBytes / (1024 * 1024)).toFixed(2)} MB (${percentage.toFixed(1)}%)`;
+            progressContainer.classList.remove('hidden');
+        }
+
+        /**
+         * Generates a random room ID.
+         * @returns {string} A random string of 8 characters.
+         */
+        function generateRoomId() {
+            return Math.random().toString(36).substring(2, 10);
+        }
+
+        /**
+         * Adds a received file to the list.
+         * @param {string} fileName - The name of the received file.
+         * @param {string} fileUrl - The URL (blob URL) of the file.
+         * @param {string} senderId - The ID of the peer who sent the file.
+         */
+        function addReceivedFileToList(fileName, fileUrl, senderId) {
+            // Remove initial "No files received yet." message if it exists
+            const noFilesMessage = receivedFilesDiv.querySelector('p.italic');
+            if (noFilesMessage) {
+                noFilesMessage.remove();
+            }
+
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <span>${fileName} (from ${senderId.substring(0, 8)}...)</span>
+                <a href="${fileUrl}" download="${fileName}" class="px-3 py-1 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors">Download</a>
+            `;
+            receivedFilesDiv.appendChild(fileItem);
+        }
+
+        /**
+         * Updates the list of connected peers in the UI.
+         */
+        function updateConnectedPeersList() {
+            connectedPeersList.innerHTML = ''; // Clear existing list
+            targetPeerSelect.innerHTML = '<option value="">Select a connected burger buddy...</option>'; // Clear select options
+
+            if (myPeerId) {
+                const myPeerItem = document.createElement('div');
+                myPeerItem.className = 'peer-item self';
+                myPeerItem.innerHTML = `<span>You (ID: ${myPeerId.substring(0, 8)}...)</span>`;
+                connectedPeersList.appendChild(myPeerItem);
+            }
+
+            if (peerConnections.size === 0) {
+                const noPeersMessage = document.createElement('p');
+                noPeersMessage.className = 'text-slate-500 italic';
+                noPeersMessage.textContent = 'No burger buddies connected yet.';
+                connectedPeersList.appendChild(noPeersMessage);
+                targetPeerSelect.disabled = true;
+                sendFileBtn.disabled = true; // Disable send button if no peers
+                return;
+            }
+
+            peerConnections.forEach((peerData, peerId) => {
+                const peerItem = document.createElement('div');
+                peerItem.className = `peer-item ${peerData.pc.iceConnectionState === 'connected' || peerData.pc.iceConnectionState === 'completed' ? 'connected' : ''}`;
+                peerItem.innerHTML = `<span>Buddy: ${peerId.substring(0, 8)}... (Status: ${peerData.pc.iceConnectionState})</span>`;
+                connectedPeersList.appendChild(peerItem);
+
+                const option = document.createElement('option');
+                option.value = peerId;
+                option.textContent = `Buddy: ${peerId.substring(0, 8)}... (${peerData.pc.iceConnectionState})`;
+                targetPeerSelect.appendChild(option);
+            });
+            targetPeerSelect.disabled = false;
+            // Only enable send button if a peer is selected AND its data channel is open
+            checkSendButtonStatus();
+        }
+
+        /**
+         * Checks if the send file button should be enabled based on selected peer and data channel state.
+         */
+        function checkSendButtonStatus() {
+            const selectedPeerId = targetPeerSelect.value;
+            const peerData = peerConnections.get(selectedPeerId);
+            sendFileBtn.disabled = !(peerData && peerData.dc && peerData.dc.readyState === 'open');
+        }
+
+        // --- WebSocket Signaling Functions ---
+
+        /**
+         * Initializes the WebSocket connection to the signaling server.
+         */
+        function initializeWebSocket() {
+            // Use window.location.host to connect to the same host that served the page
+            ws = new WebSocket(`ws://${window.location.host}`);
+
+            ws.onopen = () => {
+                displayStatus('Grilling up connection to the burger server...', 'info');
+                createRoomBtn.disabled = false;
+                joinRoomBtn.disabled = false;
+            };
+
+            ws.onmessage = async event => {
+                const message = JSON.parse(event.data);
+                console.log('Received message from signaling server:', message);
+
+                switch (message.type) {
+                    case 'your-peer-id':
+                        myPeerId = message.peerId;
+                        myPeerIdInput.value = myPeerId;
+                        displayStatus(`Your Patty ID: ${myPeerId.substring(0, 8)}... Ready to start or join a burger!`, 'info');
+                        updateConnectedPeersList();
+                        break;
+                    case 'joined-room':
+                        currentRoomId = message.roomId;
+                        roomIdInput.value = message.roomId;
+                        displayStatus(`Joined Secret Sauce Room: ${message.roomId}. Waiting for other burger buddies or exchanging connections.`, 'info');
+                        break;
+                    case 'existing-peers':
+                        // For each existing peer, create a new RTCPeerConnection and potentially an offer
+                        message.peers.forEach(peerId => {
+                            if (peerId !== myPeerId) { // Don't connect to self
+                                initializePeerConnection(peerId, false); // Not an initiator for *these* connections
+                                // If my ID is lexicographically smaller, I initiate the offer
+                                if (myPeerId < peerId) {
+                                    createOffer(peerId);
+                                }
+                            }
+                        });
+                        updateConnectedPeersList();
+                        break;
+                    case 'new-peer-joined':
+                        // When a new peer joins, create a new RTCPeerConnection for them
+                        displayStatus(`New burger buddy ${message.newPeerId.substring(0, 8)}... joined the room!`, 'info');
+                        initializePeerConnection(message.newPeerId, true); // This peer will implicitly be an initiator *for this new connection* if needed
+                        // If my ID is lexicographically smaller, I initiate the offer to the new peer
+                        if (myPeerId < message.newPeerId) {
+                            createOffer(message.newPeerId);
+                        }
+                        updateConnectedPeersList();
+                        break;
+                    case 'peer-left':
+                        displayStatus(`Burger buddy ${message.leavingPeerId.substring(0, 8)}... has left the room.`, 'info');
+                        removePeerConnection(message.leavingPeerId);
+                        updateConnectedPeersList();
+                        break;
+                    case 'offer':
+                        displayStatus(`Received offer from ${message.senderPeerId.substring(0, 8)}...`, 'info');
+                        await handleOffer(message.senderPeerId, message.sdp);
+                        updateConnectedPeersList();
+                        break;
+                    case 'answer':
+                        displayStatus(`Received answer from ${message.senderPeerId.substring(0, 8)}...`, 'info');
+                        await handleAnswer(message.senderPeerId, message.sdp);
+                        updateConnectedPeersList();
+                        break;
+                    case 'ice-candidate':
+                        if (message.candidate) {
+                            const pcData = peerConnections.get(message.senderPeerId);
+                            if (pcData && pcData.pc) {
+                                try {
+                                    await pcData.pc.addIceCandidate(new RTCIceCandidate(message.candidate));
+                                    // displayStatus(`Added ICE candidate from ${message.senderPeerId.substring(0, 8)}...`, 'info');
+                                } catch (e) {
+                                    console.error(`Error adding received ICE candidate from ${message.senderPeerId}:`, e);
+                                }
+                            }
+                        }
+                        break;
+                    case 'room-full':
+                        displayStatus(`Secret Sauce Room "${message.roomId}" is full. Please try a different ID.`, 'error');
+                        break;
+                    case 'error':
+                        displayStatus(`Server error: ${message.message}`, 'error');
+                        break;
+                    default:
+                        console.warn('Unknown message type from signaling server:', message.type);
+                }
+            };
+
+            ws.onclose = () => {
+                displayStatus('Disconnected from the burger server. Attempting to reconnect...', 'error');
+                createRoomBtn.disabled = true;
+                joinRoomBtn.disabled = true;
+                // Clear all peer connections on disconnect
+                peerConnections.forEach(peerData => {
+                    if (peerData.dc) peerData.dc.close();
+                    if (peerData.pc) peerData.pc.close();
+                });
+                peerConnections.clear();
+                incomingFileTransfers.clear();
+                updateConnectedPeersList();
+                sendFileBtn.disabled = true;
+                updateProgressBar(0, 0);
+                currentRoomId = null;
+
+                // Simple auto-reconnect logic
+                setTimeout(initializeWebSocket, 3000);
+            };
+
+            ws.onerror = error => {
+                displayStatus(`WebSocket error: ${error.message}`, 'error');
+                console.error('WebSocket error:', error);
+            };
+        }
+
+        /**
+         * Sends a signaling message to the server, including source and target peer IDs.
+         * @param {object} message - The message object to send.
+         * @param {string} [targetPeerId] - The ID of the specific peer to send the message to (for WebRTC signaling).
+         */
+        function sendSignalingMessage(message, targetPeerId = null) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const fullMessage = { ...message, senderPeerId: myPeerId, roomId: currentRoomId };
+                if (targetPeerId) {
+                    fullMessage.targetPeerId = targetPeerId;
+                }
+                ws.send(JSON.stringify(fullMessage));
+            } else {
+                console.warn('WebSocket not connected, cannot send signaling message.');
+                displayStatus('Not connected to burger server. Please refresh or check server status.', 'error');
+            }
+        }
+
+        // --- WebRTC Core Functions ---
+
+        /**
+         * Initializes a new RTCPeerConnection for a specific peer.
+         * @param {string} peerId - The ID of the remote peer.
+         * @param {boolean} isInitiatorForNewConnection - True if this peer will initiate the data channel (createOffer).
+         */
+        function initializePeerConnection(peerId, isInitiatorForNewConnection) {
+            if (peerConnections.has(peerId)) {
+                console.log(`PeerConnection already exists for ${peerId.substring(0,8)}...`);
+                return;
+            }
+
+            const pc = new RTCPeerConnection(rtcConfig);
+            peerConnections.set(peerId, { pc: pc, dc: null, sendingFile: null, fileOffset: 0 });
+            displayStatus(`Setting up patty connection for: ${peerId.substring(0, 8)}...`);
+
+            pc.onicecandidate = (event) => {
+                if (event.candidate) {
+                    sendSignalingMessage({
+                        type: 'ice-candidate',
+                        candidate: event.candidate
+                    }, peerId); // Send candidate to the specific peer
+                }
+            };
+
+            pc.oniceconnectionstatechange = () => {
+                displayStatus(`Patty connection state with ${peerId.substring(0, 8)}...: ${pc.iceConnectionState}`);
+                updateConnectedPeersList(); // Update UI with new connection state
+                checkSendButtonStatus();
+                if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
+                    displayStatus(`Patty connection established with ${peerId.substring(0, 8)}! Ready to share burger bits!`, 'success');
+                } else if (pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'closed') {
+                    displayStatus(`Patty connection with ${peerId.substring(0, 8)}... failed or disconnected.`, 'error');
+                    removePeerConnection(peerId);
+                    updateConnectedPeersList();
+                }
+            };
+
+            // Data Channel event (for the receiving peer)
+            pc.ondatachannel = (event) => {
+                const dataChannel = event.channel;
+                peerConnections.get(peerId).dc = dataChannel; // Store the data channel
+                displayStatus(`Data channel (bun-to-bun link) received from ${peerId.substring(0, 8)}...!`, 'info');
+                setupDataChannelListeners(dataChannel, peerId);
+            };
+
+            // If this peer is the initiator for *this* specific connection, create the data channel
+            if (isInitiatorForNewConnection) {
+                const dataChannel = pc.createDataChannel('file_transfer');
+                peerConnections.get(peerId).dc = dataChannel;
+                setupDataChannelListeners(dataChannel, peerId);
+            }
+        }
+
+        /**
+         * Removes a peer's connection from the map and cleans up resources.
+         * @param {string} peerId - The ID of the peer to remove.
+         */
+        function removePeerConnection(peerId) {
+            if (peerConnections.has(peerId)) {
+                const peerData = peerConnections.get(peerId);
+                if (peerData.dc) {
+                    peerData.dc.close();
+                }
+                if (peerData.pc) {
+                    peerData.pc.close();
+                }
+                peerConnections.delete(peerId);
+                incomingFileTransfers.delete(peerId); // Clean up any pending transfers from this peer
+                displayStatus(`Buddy ${peerId.substring(0, 8)}... left the burger chain.`, 'info');
+                updateConnectedPeersList();
+                checkSendButtonStatus();
+            }
+        }
+
+        /**
+         * Sets up listeners for a given data channel.
+         * @param {RTCDataChannel} dc - The data channel to set up listeners for.
+         * @param {string} peerId - The ID of the peer associated with this data channel.
+         */
+        function setupDataChannelListeners(dc, peerId) {
+            dc.onopen = () => handleDataChannelOpen(dc, peerId);
+            dc.onclose = () => handleDataChannelClose(dc, peerId);
+            dc.onmessage = (event) => handleDataChannelMessage(event, peerId);
+            dc.onerror = (error) => {
+                displayStatus(`Bun-to-bun link error with ${peerId.substring(0, 8)}...: ${error.message}`, 'error');
+                console.error(`Data channel error with ${peerId}:`, error);
+            };
+        }
+
+        /**
+         * Handles the data channel opening event.
+         * @param {RTCDataChannel} dc - The data channel that opened.
+         * @param {string} peerId - The ID of the peer.
+         */
+        function handleDataChannelOpen(dc, peerId) {
+            displayStatus(`Bun-to-bun link with ${peerId.substring(0, 8)}... is OPEN! Time to share secret sauce!`, 'success');
+            checkSendButtonStatus(); // Re-check send button status
+            updateConnectedPeersList(); // Update UI to reflect connected status
+        }
+
+        /**
+         * Handles the data channel closing event.
+         * @param {RTCDataChannel} dc - The data channel that closed.
+         * @param {string} peerId - The ID of the peer.
+         */
+        function handleDataChannelClose(dc, peerId) {
+            displayStatus(`Bun-to-bun link with ${peerId.substring(0, 8)}... closed.`, 'info');
+            checkSendButtonStatus(); // Re-check send button status
+            updateConnectedPeersList(); // Update UI to reflect disconnected status
+            // No need to remove PC here, oniceconnectionstatechange handles that.
+        }
+
+        /**
+         * Handles incoming data channel messages.
+         * Processes file metadata and file chunks.
+         * @param {MessageEvent} event - The message event.
+         * @param {string} senderId - The ID of the peer who sent the message.
+         */
+        async function handleDataChannelMessage(event, senderId) {
+            const data = event.data;
+
+            try {
+                // Try to parse as JSON for metadata or end signal
+                const parsed = JSON.parse(data);
+                if (parsed.type === 'file-metadata') {
+                    // Initialize or reset transfer state for this sender
+                    incomingFileTransfers.set(senderId, {
+                        buffers: [],
+                        name: parsed.name,
+                        size: parsed.size,
+                        mimeType: parsed.mimeType,
+                        receivedBytes: 0
+                    });
+                    displayStatus(`Incoming patty "${parsed.name}" from ${senderId.substring(0, 8)}... (${(parsed.size / (1024 * 1024)).toFixed(2)} MB)...`, 'info');
+                    // Only update global progress bar if this is the currently active transfer
+                    if (targetPeerSelect.value === senderId || !targetPeerSelect.value) { // Show if current sender or no specific sender selected
+                        updateProgressBar(0, parsed.size);
+                    }
+                } else if (parsed.type === 'file-end') {
+                    const transfer = incomingFileTransfers.get(senderId);
+                    if (transfer) {
+                        const blob = new Blob(transfer.buffers, { type: transfer.mimeType });
+                        const fileUrl = URL.createObjectURL(blob);
+                        addReceivedFileToList(transfer.name, fileUrl, senderId);
+                        displayStatus(`Burger bundle "${transfer.name}" received successfully from ${senderId.substring(0, 8)}...! Enjoy!`, 'success');
+                        incomingFileTransfers.delete(senderId); // Clear transfer state
+                        // Ensure progress bar is 100% and then hide if this was the active transfer
+                        if (targetPeerSelect.value === senderId || !targetPeerSelect.value) {
+                             updateProgressBar(transfer.size, transfer.size);
+                             setTimeout(() => updateProgressBar(0, 0), 1000); // Hide after a small delay
+                        }
+                    } else {
+                        console.warn(`Received file-end from ${senderId} but no active transfer found.`);
+                    }
+                } else {
+                    console.log(`Received unknown JSON message from ${senderId.substring(0, 8)}...:`, parsed);
+                }
+            } catch (e) {
+                // If parsing as JSON fails, it's a file chunk (ArrayBuffer)
+                if (data instanceof ArrayBuffer) {
+                    const transfer = incomingFileTransfers.get(senderId);
+                    if (transfer) {
+                        transfer.buffers.push(data);
+                        transfer.receivedBytes += data.byteLength;
+                        if (targetPeerSelect.value === senderId || !targetPeerSelect.value) {
+                            updateProgressBar(transfer.receivedBytes, transfer.size);
+                        }
+                    } else {
+                        console.warn(`Received unexpected file chunk from ${senderId} without metadata.`);
+                    }
+                } else {
+                    console.log(`Received text data (not JSON) from ${senderId.substring(0, 8)}...: ${data}`); // Handle other text messages
+                }
+            }
+        }
+
+        /**
+         * Creates a WebRTC offer and sets it as local description.
+         * Then sends the offer SDP to the signaling server for a specific target peer.
+         * @param {string} targetPeerId - The ID of the peer to create the offer for.
+         */
+        async function createOffer(targetPeerId) {
+            const pcData = peerConnections.get(targetPeerId);
+            if (!pcData || !pcData.pc) {
+                console.error(`PeerConnection not found for ${targetPeerId} to create offer.`);
+                return;
+            }
+
+            // If the data channel hasn't been created yet by the initiator, create it now
+            if (!pcData.dc) {
+                const dataChannel = pcData.pc.createDataChannel('file_transfer');
+                pcData.dc = dataChannel;
+                setupDataChannelListeners(dataChannel, targetPeerId);
+            }
+
+            try {
+                const offer = await pcData.pc.createOffer();
+                await pcData.pc.setLocalDescription(offer);
+                sendSignalingMessage({ type: 'offer', sdp: pcData.pc.localDescription }, targetPeerId);
+                displayStatus(`WebRTC Offer sent to buddy ${targetPeerId.substring(0, 8)}... Waiting for answer.`, 'info');
+            } catch (error) {
+                displayStatus(`Error creating offer for ${targetPeerId.substring(0, 8)}...: ${error.message}`, 'error');
+                console.error(`Error creating offer for ${targetPeerId}:`, error);
+            }
+        }
+
+        /**
+         * Handles a received offer (SDP) from a remote peer.
+         * Sets the offer as remote description and creates an answer.
+         * @param {string} senderId - The ID of the peer who sent the offer.
+         * @param {RTCSessionDescriptionInit} sdp - The SDP offer.
+         */
+        async function handleOffer(senderId, sdp) {
+            // Ensure a peer connection exists for this sender
+            initializePeerConnection(senderId, false); // This peer is not the initiator for the data channel
+
+            const pcData = peerConnections.get(senderId);
+            if (!pcData || !pcData.pc) {
+                console.error(`PeerConnection not found for ${senderId} to handle offer.`);
+                return;
+            }
+
+            try {
+                await pcData.pc.setRemoteDescription(new RTCSessionDescription(sdp));
+                await createAnswer(senderId);
+            } catch (error) {
+                displayStatus(`Error handling offer from ${senderId.substring(0, 8)}...: ${error.message}`, 'error');
+                console.error(`Error handling offer from ${senderId}:`, error);
+            }
+        }
+
+        /**
+         * Creates a WebRTC answer and sets it as local description.
+         * Then sends the answer SDP to the signaling server for a specific target peer.
+         * @param {string} targetPeerId - The ID of the peer to create the answer for.
+         */
+        async function createAnswer(targetPeerId) {
+            const pcData = peerConnections.get(targetPeerId);
+            if (!pcData || !pcData.pc) {
+                displayStatus(`Patty connection not initialized for ${targetPeerId.substring(0, 8)}...`, 'error');
+                return;
+            }
+            try {
+                const answer = await pcData.pc.createAnswer();
+                await pcData.pc.setLocalDescription(answer);
+                sendSignalingMessage({ type: 'answer', sdp: pcData.pc.localDescription }, targetPeerId);
+                displayStatus(`WebRTC Answer sent to buddy ${targetPeerId.substring(0, 8)}...`, 'info');
+            } catch (error) {
+                displayStatus(`Error creating answer for ${targetPeerId.substring(0, 8)}...: ${error.message}`, 'error');
+                console.error(`Error creating answer for ${targetPeerId}:`, error);
+            }
+        }
+
+        /**
+         * Handles a received answer (SDP) from the remote peer.
+         * Sets the answer as remote description for the specific peer connection.
+         * @param {string} senderId - The ID of the peer who sent the answer.
+         * @param {RTCSessionDescriptionInit} sdp - The SDP answer.
+         */
+        async function handleAnswer(senderId, sdp) {
+            const pcData = peerConnections.get(senderId);
+            if (!pcData || !pcData.pc) {
+                displayStatus(`Patty connection not found for ${senderId.substring(0, 8)}... to handle answer.`, 'error');
+                return;
+            }
+            try {
+                await pcData.pc.setRemoteDescription(new RTCSessionDescription(sdp));
+                displayStatus(`Answer set for ${senderId.substring(0, 8)}... Burger connection should be established soon!`, 'success');
+            } catch (error) {
+                displayStatus(`Error handling answer from ${senderId.substring(0, 8)}...: ${error.message}`, 'error');
+                console.error(`Error handling answer from ${senderId}:`, error);
+            }
+        }
+
+        /**
+         * Sends the selected file over the data channel to the selected target peer.
+         */
+        async function sendFile() {
+            const file = fileInput.files[0];
+            const targetPeerId = targetPeerSelect.value;
+
+            if (!file) {
+                displayStatus('Please pick a patty to send.', 'error');
+                return;
+            }
+            if (!targetPeerId) {
+                displayStatus('Please select a burger buddy to send the patty to.', 'error');
+                return;
+            }
+
+            const peerData = peerConnections.get(targetPeerId);
+            if (!peerData || !peerData.dc || peerData.dc.readyState !== 'open') {
+                displayStatus(`Bun-to-bun link to ${targetPeerId.substring(0, 8)}... is not open. Ensure your burger connection is seasoned!`, 'error');
+                return;
+            }
+
+            peerData.sendingFile = file; // Store the file being sent for this peer
+            peerData.fileOffset = 0; // Reset offset for this file
+            const fileSize = file.size;
+            const fileName = file.name;
+            const fileType = file.type || 'application/octet-stream'; // Default MIME type
+
+            displayStatus(`Grilling & sending patty: "${fileName}" to ${targetPeerId.substring(0, 8)}... (${(fileSize / (1024 * 1024)).toFixed(2)} MB)...`, 'info');
+            updateProgressBar(0, fileSize);
+
+            // Send file metadata
+            peerData.dc.send(JSON.stringify({
+                type: 'file-metadata',
+                name: fileName,
+                size: fileSize,
+                mimeType: fileType
+            }));
+
+            // Send file chunks
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                if (peerData.dc.readyState === 'open') {
+                    peerData.dc.send(e.target.result); // Send ArrayBuffer
+                    peerData.fileOffset += e.target.result.byteLength;
+                    updateProgressBar(peerData.fileOffset, fileSize);
+
+                    if (peerData.fileOffset < fileSize) {
+                        readNextChunk();
+                    } else {
+                        // All chunks sent, send end signal
+                        peerData.dc.send(JSON.stringify({ type: 'file-end' }));
+                        displayStatus(`Patty "${fileName}" sent successfully to ${targetPeerId.substring(0, 8)}! Enjoy your burger!`, 'success');
+                        peerData.sendingFile = null; // Clear sending file
+                        peerData.fileOffset = 0; // Reset offset
+                    }
+                } else {
+                    displayStatus(`Bun-to-bun link to ${targetPeerId.substring(0, 8)}... not open, stopping patty transfer.`, 'error');
+                    peerData.sendingFile = null;
+                    peerData.fileOffset = 0;
+                    updateProgressBar(0, 0);
+                }
+            };
+
+            reader.onerror = (error) => {
+                displayStatus(`Error reading patty for ${targetPeerId.substring(0, 8)}...: ${error.message}`, 'error');
+                console.error('Error reading file:', error);
+                peerData.sendingFile = null;
+                peerData.fileOffset = 0;
+            };
+
+            function readNextChunk() {
+                const slice = file.slice(peerData.fileOffset, peerData.fileOffset + chunkSize);
+                reader.readAsArrayBuffer(slice);
+            }
+
+            readNextChunk(); // Start reading the first chunk
+        }
+
+        // --- Event Listeners ---
+
+        createRoomBtn.addEventListener('click', () => {
+            if (!myPeerId) {
+                displayStatus('Still waiting for your patty ID from the burger server. Please wait a moment.', 'error');
+                return;
+            }
+            const newRoomId = roomIdInput.value.trim() || generateRoomId();
+            currentRoomId = newRoomId;
+            roomIdInput.value = newRoomId;
+            sendSignalingMessage({ type: 'join-room', roomId: newRoomId });
+        });
+
+        joinRoomBtn.addEventListener('click', () => {
+            if (!myPeerId) {
+                displayStatus('Still waiting for your patty ID from the burger server. Please wait a moment.', 'error');
+                return;
+            }
+            const existingRoomId = roomIdInput.value.trim();
+            if (!existingRoomId) {
+                displayStatus('Please enter a Secret Sauce Room ID to join the burger bash.', 'error');
+                return;
+            }
+            currentRoomId = existingRoomId;
+            sendSignalingMessage({ type: 'join-room', roomId: existingRoomId });
+        });
+
+        sendFileBtn.addEventListener('click', sendFile);
+        sendFileBtn.disabled = true; // Initially disable send button
+
+        targetPeerSelect.addEventListener('change', checkSendButtonStatus);
+
+        // Initial setup
+        roomIdInput.value = generateRoomId(); // Pre-fill with a new room ID for convenience
+        createRoomBtn.disabled = true; // Disable until WebSocket connected
+        joinRoomBtn.disabled = true; // Disable until WebSocket connected
+        initializeWebSocket(); // Connect to signaling server on page load
+    </script>
+</body>
+</html>
