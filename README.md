@@ -1,28 +1,36 @@
-<h1 align="center">Hi 👋, I'm Aryan</h1>
-<h3 align="center">A passionate computer engineering student. I'm always excited to dive into new tech and build cool stuff.</h3>
+# p2pBurger Project Documentation 🍔
 
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=devbyaryanvala&label=Profile%20views&color=0e75b6&style=flat" alt="devbyaryanvala" /> </p>
+---
 
-- 🔭 I’m currently working on **A Version-Control System**
+## Overview
+**p2pBurger** is a **filesharing application** developed by devbyaryanvala. It leverages **WebRTC** technology to facilitate direct **peer-to-peer file transfers** 🤝.
 
-- 🌱 I’m currently learning **TensorFlow**
+---
 
-- 👨‍💻 All of my projects are available at [aryanvala.site](aryanvala.site)
+## Technologies Used
+The project is primarily built using:
+* **HTML** 📄 (83.9%)
+* **JavaScript** 💻 (16.1%)
 
-- 💬 Ask me about **NodeJS, ThreeJS, Flask, C++, C, JAVA, dotNET, Flutter, Git, and more**
+---
 
-- 📫 How to reach me **aryanvala.edu@gmail.com**
+## Features
+* **Peer-to-Peer Filesharing**: Utilizes WebRTC for direct communication between peers, enabling efficient file transfers without relying on a central server for data exchange 🚀.
 
-<h3 align="left">Connect with me:</h3>
-<p align="left">
-<a href="https://linkedin.com/in/aryan-vala-ba62a1212" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="aryan-vala-ba62a1212" height="30" width="40" /></a>
-<a href="https://instagram.com/dez.artab" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="dez.artab" height="30" width="40" /></a>
-</p>
+---
 
-<h3 align="left">Languages and Tools:</h3>
-<p align="left"> <a href="https://developer.android.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/android/android-original-wordmark.svg" alt="android" width="40" height="40"/> </a> <a href="https://www.gnu.org/software/bash/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/gnu_bash/gnu_bash-icon.svg" alt="bash" width="40" height="40"/> </a> <a href="https://www.blender.org/" target="_blank" rel="noreferrer"> <img src="https://download.blender.org/branding/community/blender_community_badge_white.svg" alt="blender" width="40" height="40"/> </a> <a href="https://getbootstrap.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-plain-wordmark.svg" alt="bootstrap" width="40" height="40"/> </a> <a href="https://www.cprogramming.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg" alt="c" width="40" height="40"/> </a> <a href="https://www.w3schools.com/cpp/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="cplusplus" width="40" height="40"/> </a> <a href="https://www.w3schools.com/cs/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg" alt="csharp" width="40" height="40"/> </a> <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a> <a href="https://dart.dev" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/dartlang/dartlang-icon.svg" alt="dart" width="40" height="40"/> </a> <a href="https://dotnet.microsoft.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/dot-net/dot-net-original-wordmark.svg" alt="dotnet" width="40" height="40"/> </a> <a href="https://firebase.google.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="firebase" width="40" height="40"/> </a> <a href="https://flutter.dev" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg" alt="flutter" width="40" height="40"/> </a> <a href="https://git-scm.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/> </a> <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/> </a> <a href="https://www.java.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> <a href="https://www.linux.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" alt="linux" width="40" height="40"/> </a> <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a> <a href="https://www.mysql.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="mysql" width="40" height="40"/> </a> <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a> <a href="https://www.php.net" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/php/php-original.svg" alt="php" width="40" height="40"/> </a> <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a> <a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/> </a> <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" alt="tailwind" width="40" height="40"/> </a> <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/> </a> <a href="https://unity.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/unity3d/unity3d-icon.svg" alt="unity" width="40" height="40"/> </a> </p>
+## Setup and Local Execution
+Currently, detailed instructions on how to set up and run the p2pBurger project locally are not available 🚧. To get the project running, you would typically need to:
 
-<p><img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=devbyaryanvala&show_icons=true&locale=en&layout=compact" alt="devbyaryanvala" /></p>
+1.  **Clone the Repository**:
+    ```bash
+    git clone [https://github.com/devbyaryanvala/p2pBurger.git](https://github.com/devbyaryanvala/p2pBurger.git)
+    ```
+2.  **Navigate to the Project Directory**:
+    ```bash
+    cd p2pBurger
+    ```
+3.  **Local Server**: Since the project uses HTML and JavaScript, it likely requires a local web server to run correctly (e.g., using Python's `http.server`, Node.js's `serve`, or Live Server extension in VS Code) 🌐.
+4.  **WebRTC Requirements**: As a WebRTC application, it might have specific requirements for establishing peer connections, such as STUN/TURN servers for NAT traversal, though basic functionality might work on a local network without them 🚦.
 
-<p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=devbyaryanvala&show_icons=true&locale=en" alt="devbyaryanvala" /></p>
-
+For more information, you may need to refer directly to the source code on the [p2pBurger GitHub repository](https://github.com/devbyaryanvala/p2pBurger) 🧑‍💻.
